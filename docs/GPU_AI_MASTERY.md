@@ -78,3 +78,5 @@ L'objectif est de transformer ce lab en un "Agent de Sécurité Souverain" :
 
 ---
 *Document généré le 19 Mai 2026 - Configuration Lab "Hacker-DIY"*
+EOF
+,file_path:
