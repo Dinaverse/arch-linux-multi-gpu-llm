@@ -1,32 +1,32 @@
-# 🚀 GUIDE MAÎTRE : INFRASTRUCTURE IA HEADLESS (4x NVIDIA P106-100)
+# 🚀 MASTER GUIDE: HEADLESS AI INFRASTRUCTURE (4x NVIDIA P106-100)
 
-Ce document centralise la configuration, l'optimisation et la stratégie d'évolution de votre laboratoire de calcul distribué sous Arch Linux.
+This document centralizes configuration, optimization, and evolution strategy for your distributed compute laboratory under Arch Linux.
 
 ---
 
-## 🛠️ 1. CONFIGURATION SYSTÈME & PILOTES (ARCH LINUX)
+## 🛠️ 1. SYSTEM & DRIVER CONFIGURATION (ARCH LINUX)
 
-### A. Initialisation des GPUs "Mining" (P106-100)
-Les cartes P106-100 n'ont pas de sortie vidéo. Le défi est de forcer le chargement des pilotes NVIDIA sans interface graphique pour le calcul CUDA.
+### A. Initializing "Mining" GPUs (P106-100)
+P106-100 cards lack physical video outputs. The challenge is to force loading NVIDIA drivers without a GUI for CUDA computing.
 
-*   **Modification de `/etc/mkinitcpio.conf` :**
+*   **Modify `/etc/mkinitcpio.conf`:**
     ```bash
     MODULES=(intel_agp i915 nvidia nvidia_modeset nvidia_uvm nvidia_drm)
     ```
-    *Note : `i915` charge l'iGPU Intel pour l'affichage, libérant les 24 Go de VRAM NVIDIA.*
+    *Note: `i915` loads the Intel iGPU for display, freeing the 24GB of NVIDIA VRAM.*
 
-*   **Paramètres GRUB (`/etc/default/grub`) :**
+*   **GRUB Parameters (`/etc/default/grub`):**
     ```text
     GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet nvidia-drm.modeset=1"
     ```
 
-### B. Optimisations de Performance
-*   **Kernel Linux-Zen :** Meilleure gestion de l'ordonnancement pour les LLM.
-*   **Persistence Mode :** Indispensable pour éviter la latence de réveil des GPUs.
+### B. Performance Optimizations
+*   **Linux-Zen Kernel:** Better scheduling management for LLMs.
+*   **Persistence Mode:** Essential to avoid GPU wake-up latency.
     ```bash
     sudo systemctl enable --now nvidia-persistenced
     ```
-*   **Gestion de la RAM (ZRAM) :** Avec 16 Go de RAM système, ZRAM compense les débordements lors du chargement de gros modèles (Qwen 27B).
+*   **RAM Management (ZRAM):** With 16GB system RAM, ZRAM compensates for overflows when loading large models (Qwen 27B).
     ```text
     # /etc/systemd/zram-generator.conf
     [zram0]
@@ -36,47 +36,47 @@ Les cartes P106-100 n'ont pas de sortie vidéo. Le défi est de forcer le charge
 
 ---
 
-## 🧠 2. ÉCOSYSTÈME IA (OLLAMA, TENSORRT, PYTORCH)
+## 🧠 2. AI ECOSYSTEM (OLLAMA, TENSORRT, PYTORCH)
 
-### A. Moteur d'Inférence : Ollama
-*   **Multi-GPU :** Ollama détecte nativement vos 4 cartes et partitionne les modèles.
-*   **Modèle Cible :** Qwen 3.5:27B (~17 Go) s'exécute entièrement dans la VRAM (24 Go).
-*   **Optimisation :** Toujours privilégier les quantifications `Q4_K_M` pour un équilibre parfait entre précision et vitesse.
+### A. Inference Engine: Ollama
+*   **Multi-GPU:** Ollama natively detects your 4 cards and partitions models.
+*   **Target Model:** Qwen 3.5:27B (~17GB) runs entirely in VRAM (24GB).
+*   **Optimization:** Always prioritize `Q4_K_M` quantizations for a perfect balance between precision and speed.
 
-### B. Environnements de Développement
-*   **PyTorch & TensorRT :** Configurés pour exploiter `sm_61` (architecture Pascal).
-*   **Bridge Natif :** Utilisation de scripts Python (`subprocess`) pour lier l'IA aux outils de Kali Linux sans la latence des containers.
+### B. Development Environments
+*   **PyTorch & TensorRT:** Configured to leverage `sm_61` (Pascal architecture).
+*   **Native Bridge:** Uses Python scripts (`subprocess`) to link AI with Kali Linux tools without container latency.
 
 ---
 
-## 🌐 3. EXPLOITATION DU CATALOGUE NVIDIA NGC
+## 🌐 3. LEVERAGING THE NVIDIA NGC CATALOG
 
-Bien que votre architecture soit Pascal, le catalogue NGC reste une mine d'or via Docker :
+Although your architecture is Pascal, the NGC catalog remains a goldmine via Docker:
 
-| Outil | Compatibilité P106-100 | Usage Suggéré |
+| Tool | P106-100 Compatibility | Suggested Usage |
 | :--- | :--- | :--- |
-| **NVIDIA Riva** | ✅ Excellente | STT/TTS pour piloter le lab à la voix. |
-| **RAPIDS (v23.08)** | ✅ Stable | Analyse de logs massive (millions de lignes/sec). |
-| **Triton Server** | ✅ Stable | Service de modèles multiples en parallèle. |
-| **Morpheus** | ⚠️ Expérimental | Détection de menaces (nécessite adaptation Pascal). |
+| **NVIDIA Riva** | ✅ Excellent | STT/TTS to voice-control the lab. |
+| **RAPIDS (v23.08)** | ✅ Stable | Massive log analysis (millions of lines/sec). |
+| **Triton Server** | ✅ Stable | Serving multiple models in parallel. |
+| **Morpheus** | ⚠️ Experimental | Threat detection (requires Pascal adaptation). |
 
-### Stratégie Docker pour NGC :
-Utilisez toujours des images spécifiant CUDA 11.x ou 12.1 pour garantir la compatibilité avec l'architecture `sm_61`.
-Exemple : `nvcr.io/nvidia/pytorch:23.08-py3`
-
----
-
-## 🛡️ 4. ÉVOLUTION CYBERSÉCURITÉ & AUTONOMIE
-
-L'objectif est de transformer ce lab en un "Agent de Sécurité Souverain" :
-1.  **Native Bridge :** Le serveur MCP (`mcp-security-server.js`) fait le pont entre Open WebUI et les 28 outils Kali.
-2.  **Confidentialité :** Zéro Cloud. Toutes les données de scan et les logs restent dans votre réseau local.
-3.  **Réseau Distribué :** 
-    *   **Cerveau :** Arch Linux (4x GPU).
-    *   **Interface :** Dell Precision (32 Go RAM).
-    *   **Exécution :** Kali Linux (64 Go RAM).
+### Docker Strategy for NGC:
+Always use images specifying CUDA 11.x or 12.1 to ensure compatibility with `sm_61` architecture.
+Example: `nvcr.io/nvidia/pytorch:23.08-py3`
 
 ---
-*Document généré le 19 Mai 2026 - Configuration Lab "Hacker-DIY"*
+
+## 🛡️ 4. CYBERSECURITY EVOLUTION & AUTONOMY
+
+The goal is to transform this lab into a "Sovereign Security Agent":
+1.  **Native Bridge:** The MCP server (`mcp-security-server.js`) bridges Open WebUI and the 28 Kali tools.
+2.  **Confidentiality:** Zero Cloud. All scan data and logs remain on your local network.
+3.  **Distributed Network:** 
+    *   **Brain:** Arch Linux (4x GPU).
+    *   **Interface:** Dell Precision (32GB RAM).
+    *   **Execution:** Kali Linux (64GB RAM).
+
+---
+*Document generated May 19, 2026 - "Hacker-DIY" Lab Configuration*
 EOF
 ,file_path:
