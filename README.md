@@ -94,3 +94,5 @@ Le problème initial de "Driver Communication Failed" a été résolu par :
 `arch-linux` `nvidia-gpu` `qwen` `ollama` `cuda` `ml-infrastructure` `gpu-computing` `llm` `ai`
 EOF
 ,file_path:
+## Manuel Maître
+Vous trouverez le guide complet de configuration et d'optimisation matérielle dans : [GPU_AI_MASTERY.md](docs/GPU_AI_MASTERY.md)
