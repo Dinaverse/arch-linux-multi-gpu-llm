@@ -92,3 +92,7 @@ Issues resolved by:
 
 ## 🏷️ Tags
 `arch-linux` `nvidia-gpu` `qwen` `ollama` `cuda` `ml-infrastructure` `gpu-computing` `llm` `ai`
+
+## Cross-References
+- **Infrastructure Architecture:** See [sovereign-ai-infrastructure/infrastructure/arch-linux-cluster](../sovereign-ai-infrastructure/infrastructure/arch-linux-cluster)
+- **GPU Monitoring:** See [python-security-analytics](../python-security-analytics) for monitoring scripts.
