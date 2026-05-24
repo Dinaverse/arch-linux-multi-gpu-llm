@@ -7,13 +7,13 @@
 
 ## 📋 Project Overview
 
-Ce dépôt documente un guide d'optimisation complet pour l'exécution d'un modèle LLM de 27B paramètres (Qwen 3.5) sous Arch Linux avec 4 GPU NVIDIA. L'infrastructure est désormais pleinement opérationnelle avec les 4 cartes reconnues (ID 0 à 3).
+This repository documents a complete optimization guide for running a 27B parameter large language model (Qwen 3.5) on Arch Linux with 4x consumer-grade NVIDIA GPUs. The infrastructure is fully operational with all 4 GPUs recognized (IDs 0-3).
 
 ### Why This Matters
-- **Real-world infrastructure**: This is how production ML inference systems are built
-- **Optimization challenges**: Demonstrates solving complex hardware/software integration issues
-- **Scalability**: 4x GPU setup (24GB VRAM) enables running larger models simultaneously
-- **Educational value**: Complete walkthrough for others attempting similar setups
+- **Real-world infrastructure**: Demonstrates production-grade ML inference system building.
+- **Optimization challenges**: Solving complex hardware/software integration issues.
+- **Scalability**: 4x GPU setup (24GB VRAM) enables larger models.
+- **Educational value**: Walkthrough for multi-GPU configurations.
 
 ---
 
@@ -34,18 +34,18 @@ Ce dépôt documente un guide d'optimisation complet pour l'exécution d'un mod�
 
 ---
 
-## ✅ État du déploiement
+## ✅ Deployment Status
 - [x] NVIDIA Drivers (v535+)
 - [x] CUDA / OpenCL
 - [x] GRUB DRM settings (nvidia-drm.modeset=1)
-- [x] Détection multi-GPU (IDs 0, 1, 2, 3 validés)
-- [x] Inférence LLM fonctionnelle sur 4x GPU
+- [x] Multi-GPU detection (IDs 0, 1, 2, 3 validated)
+- [x] LLM inference functional on 4x GPUs
 
 ---
 
-## 🔍 Vérification GPU (nvidia-smi)
+## 🔍 GPU Verification (nvidia-smi)
 
-Tous les GPU sont maintenant correctement communiqués par le pilote :
+All GPUs are correctly communicating with the driver:
 
 ```
 +-----------------------------------------------------------------------------+
@@ -68,18 +68,18 @@ Tous les GPU sont maintenant correctement communiqués par le pilote :
 
 ---
 
-## 🐛 Résolution de problèmes (Communication Driver)
-Le problème initial de "Driver Communication Failed" a été résolu par :
-1. Reconstruction complète de la pile DKMS.
-2. Alignement des versions kernel/nvidia.
-3. Vérification des accès bus PCI pour les 4 cartes P106.
+## 🐛 Troubleshooting (Driver Communication)
+Issues resolved by:
+1. Complete DKMS stack rebuild.
+2. Kernel/NVIDIA version alignment.
+3. PCI bus access verification for P106 cards.
 
 ---
 
 ## 📊 Performance Metrics
 
 ### Expected Throughput
-- **4x GPU Parallel**: Inférence optimisée sur les 4 nœuds P106.
+- **4x GPU Parallel**: Optimized inference across 4 P106 nodes.
 - **Memory Footprint**: ~17GB (model) + ~2-3GB (CUDA overhead).
 
 ---
@@ -92,7 +92,3 @@ Le problème initial de "Driver Communication Failed" a été résolu par :
 
 ## 🏷️ Tags
 `arch-linux` `nvidia-gpu` `qwen` `ollama` `cuda` `ml-infrastructure` `gpu-computing` `llm` `ai`
-EOF
-,file_path:
-## Manuel Maître
-Vous trouverez le guide complet de configuration et d'optimisation matérielle dans : [GPU_AI_MASTERY.md](docs/GPU_AI_MASTERY.md)
