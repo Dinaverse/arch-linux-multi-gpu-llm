@@ -28,6 +28,16 @@ This repository documents a complete optimization guide for running a 27B parame
 | **dGPU (x4)** | 4x NVIDIA P106-100 (6GB each = **24GB total VRAM**) |
 | **Storage** | 119 GB (Btrfs) |
 
+### Architecture
+```mermaid
+graph TD
+    A[Inbound Request] --> B(Load Balancer / Ollama)
+    B --> C[GPU 1: P106-100]
+    B --> D[GPU 2: P106-100]
+    B --> E[GPU 3: P106-100]
+    B --> F[GPU 4: P106-100]
+```
+
 ### Model
 - **Model Name**: Qwen 3.5:27B
 - **Framework**: Ollama (Local LLM runtime)
